@@ -9,17 +9,17 @@ terraform {
 
 provider "docker" {}
 
-resource "docker_image" "nginx" {
-  name = "nginx:aula-terraform"
+resource "docker_image" "nginx_image" {
+  name = "nginx:latest"
   build {
-    context    = path.root
+    context    = "./docker_nginx"
     dockerfile = "Dockerfile"
   }
 }
 
 resource "docker_container" "nginx_server" {
-  image = docker_image.nginx.image_id
   name  = var.container_name
+  image = docker_image.nginx_image.name
   ports {
     internal = 80
     external = var.external_port
